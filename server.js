@@ -34,8 +34,13 @@ app.get('/', (req, res) => {
 });
 
 // Otonom Zekayı Başlat
+const github = require('./lib/github-saver');
 const brain = require('./lib/autonomous-brain');
-brain.startBackgroundLearning();
+
+// GitHub'dan hafızayı çek ve sonra zekayı başlat
+github.syncFromGitHub().then(() => {
+  brain.startBackgroundLearning();
+});
 
 app.listen(PORT, () => {
   console.log(`\n🧠 Solenz AI çalışıyor!`);
