@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
       console.log(`🔎 "${message.trim()}" için araştırma başlatılıyor...`);
       
       try {
-        const researchResult = await research.performResearch(message.trim());
+        const researchResult = await research.performResearch(message.trim(), 2); // Derinlik 2: Alt konuları da bul ve öğren
         if (researchResult.success) {
           // Yeni bilgilerle tekrar ara
           result = engine.findAnswer(message.trim());
