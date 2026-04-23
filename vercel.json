@@ -7,5 +7,11 @@
     { "source": "/css/(.*)", "destination": "/public/css/$1" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/public/$1" }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/learn",
+      "schedule": "0 * * * *"
+    }
   ]
 }
