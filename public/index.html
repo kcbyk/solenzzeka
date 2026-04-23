@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solenz AI — Yapay Zeka Asistan</title>
+  <meta name="description" content="Solenz AI - Sıfırdan eğitilebilir yapay zeka asistan. Döküman yükle, eğit, sohbet et.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+  <div class="bg-particles"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header" id="app-header">
+      <div class="header-brand">
+        <div class="header-logo">S</div>
+        <div>
+          <div class="header-title">Solenz AI</div>
+          <div class="header-subtitle" id="status-text">Hazır • 0 döküman yüklü</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/train" class="header-btn" id="train-btn">
+          📚 <span>Eğitim</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chat-area">
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-icon">🧠</div>
+        <h1 class="welcome-title">Solenz AI</h1>
+        <p class="welcome-desc">
+          Merhaba! Ben Solenz, sıfırdan eğitilebilir bir yapay zeka asistanım.
+          Bana döküman yükleyerek öğretebilir, sonra sorularınızı sorabilirsiniz.
+        </p>
+        <div class="welcome-chips">
+          <button class="welcome-chip" onclick="askQuestion('Neler yapabilirsin?')">🤖 Neler yapabilirsin?</button>
+          <button class="welcome-chip" onclick="askQuestion('Nasıl eğitilirsin?')">📖 Nasıl eğitilirsin?</button>
+          <button class="welcome-chip" onclick="askQuestion('Kaç döküman yüklü?')">📊 İstatistikler</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typing-indicator">
+      <div class="message-avatar" style="background: var(--accent-gradient); color: white;">S</div>
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <div class="input-wrapper">
+        <input type="text" class="chat-input" id="chat-input"
+               placeholder="Solenz'e bir şey sorun..." autocomplete="off"
+               maxlength="1000">
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Gönder">
+          ➤
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/chat.js"></script>
+</body>
+</html>

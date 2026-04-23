@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solenz AI — Eğitim Paneli</title>
+  <meta name="description" content="Solenz AI Eğitim Paneli - Döküman yükle ve yapay zekayı eğit.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+  <div class="bg-particles"></div>
+
+  <div class="train-container">
+    <!-- Header -->
+    <header class="header" id="app-header" style="max-width:900px; margin:0 auto 24px; border-radius: 0 0 16px 16px;">
+      <div class="header-brand">
+        <div class="header-logo">S</div>
+        <div>
+          <div class="header-title">Eğitim Paneli</div>
+          <div class="header-subtitle">Döküman yükle ve Solenz'i eğit</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="header-btn">
+          💬 <span>Sohbet</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Stats Section -->
+    <div class="train-section" id="stats-section">
+      <div class="section-title"><span class="icon">📊</span> İstatistikler</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-docs">0</div>
+          <div class="stat-label">Döküman</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-chunks">0</div>
+          <div class="stat-label">Parça</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-words">0</div>
+          <div class="stat-label">Kelime</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-vocab">0</div>
+          <div class="stat-label">Kelime Dağarcığı</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="train-section">
+      <div class="section-title"><span class="icon">📁</span> Dosya Yükle</div>
+      <div class="upload-area" id="upload-area"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()">
+        <div class="icon">📄</div>
+        <p>Dosyayı buraya sürükleyin veya tıklayın</p>
+        <small>.txt dosyaları desteklenir • Maks 5MB</small>
+        <input type="file" class="upload-input" id="file-input"
+               accept=".txt,.md,.csv" multiple onchange="handleFileSelect(event)">
+      </div>
+      <div class="progress-bar" id="upload-progress">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Text Input Section -->
+    <div class="train-section">
+      <div class="section-title"><span class="icon">✏️</span> Metin ile Eğit</div>
+      <div class="text-train-area">
+        <input type="text" class="text-name-input" id="text-name"
+               placeholder="Döküman adı (ör: Türkiye Tarihi)">
+        <textarea class="text-content-input" id="text-content"
+                  placeholder="Eğitim metnini buraya yapıştırın...&#10;&#10;Ne kadar çok metin eklerseniz, Solenz o kadar çok öğrenir!"></textarea>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="train-text-btn" onclick="trainWithText()">
+            🧠 Eğit
+          </button>
+          <button class="btn btn-secondary" onclick="clearTextInputs()">
+            🗑️ Temizle
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents Section -->
+    <div class="train-section">
+      <div class="section-title"><span class="icon">📚</span> Yüklenen Dökümanlar</div>
+      <div class="docs-list" id="docs-list">
+        <div class="empty-state" id="empty-state">
+          <div class="icon">📭</div>
+          <p>Henüz döküman yüklenmedi</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export/Import Section -->
+    <div class="train-section">
+      <div class="section-title"><span class="icon">💾</span> Bilgi Tabanı Yönetimi</div>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">
+        Eğitim verilerini dışa aktarabilir ve tekrar yükleyebilirsiniz. Bu sayede Vercel'de soğuk başlangıçtan sonra bile verileriniz kaybolmaz.
+      </p>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="exportKnowledge()">📥 Dışa Aktar</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('import-input').click()">
+          📤 İçe Aktar
+        </button>
+        <input type="file" id="import-input" accept=".json" style="display:none" onchange="importKnowledge(event)">
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/train.js"></script>
+</body>
+</html>

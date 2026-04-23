@@ -1,0 +1,12 @@
+{
+  "name": "solenz-ai",
+  "version": "1.0.0",
+  "description": "Solenz Yapay Zeka - Sıfırdan eğitilebilir web tabanlı AI",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1"
+  }
+}
