@@ -67,6 +67,10 @@ async function sendMessage() {
     showTyping(false);
 
     if (data.success) {
+      if (data.autoLearned) {
+        showToast('İnternette araştırma yapıldı ve yeni bilgiler öğrenildi! 🌍', 'info');
+      }
+
       addMessage(data.answer, 'ai', {
         confidence: data.confidence,
         sources: data.sources,

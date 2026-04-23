@@ -15,7 +15,30 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Mesaj boş olamaz' });
     }
 
-    const result = engine.findAnswer(message.trim());
+    let result = engine.findAnswer(message.trim());
+    let autoLearned = false;
+
+    // EĞER CEVAP BULUNAMAZSA VEYA GÜVEN DÜŞÜKSE GELİŞMİŞ ARAŞTIRMA YAP
+    if (result.noData || result.confidence < 20) {
+      const research = require('../lib/web-researcher');
+      const brain = require('../lib/autonomous-brain');
+      const github = require('../lib/github-saver');
+
+      const researchResult = await research.performResearch(message.trim());
+      if (researchResult.success) {
+        result = engine.findAnswer(message.trim());
+        autoLearned = true;
+        
+        // Eğitim setine ekle ve GitHub'a gönder
+        brain.addToTrainingSet(message.trim(), result.answer);
+        github.autoSave(); 
+      }
+    } else {
+      // Normal cevapları da bazen eğitim setine ekle (kalite için)
+      const brain = require('../lib/autonomous-brain');
+      brain.addToTrainingSet(message.trim(), result.answer);
+    }
+
     const stats = engine.getStats();
 
     return res.status(200).json({
@@ -24,6 +47,7 @@ module.exports = async (req, res) => {
       confidence: result.confidence,
       sources: result.sources,
       noData: result.noData || false,
+      autoLearned: autoLearned, // Frontend'de bilgi vermek için
       stats: stats
     });
   } catch (error) {

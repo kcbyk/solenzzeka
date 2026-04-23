@@ -33,6 +33,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Otonom Zekayı Başlat
+const brain = require('./lib/autonomous-brain');
+brain.startBackgroundLearning();
+
 app.listen(PORT, () => {
   console.log(`\n🧠 Solenz AI çalışıyor!`);
   console.log(`   💬 Chat: http://localhost:${PORT}`);
