@@ -33,9 +33,16 @@ module.exports = async (req, res) => {
           result = engine.findAnswer(message.trim());
           autoLearned = true;
           
-          // Eğitim setine ekle ve GitHub'a gönder
-          brain.addToTrainingSet(message.trim(), result.answer);
-          github.autoSave(); 
+          // EĞER HALA CEVAP YOKSA (Dosya sistemi hatası olabilir), Araştırma sonucunu direkt kullan
+          if (result.noData || result.confidence < 20) {
+            result.answer = researchResult.summary || "Bu konuda bir özet buldum: " + (researchResult.results[0]?.text || "İnternette bilgi var ama işleyemedim.");
+            result.noData = false;
+            result.confidence = 50;
+          }
+          
+          // Arka planda kaydetmeyi dene
+          try { brain.addToTrainingSet(message.trim(), result.answer); } catch(e){}
+          try { github.autoSave(); } catch(e){}
         } else {
           // Araştırma başarısızsa bile en azından "bilmiyorum ama öğrenebilirim" mesajı ver
           result.answer = `Üzgünüm, "${message.trim()}" hakkında şu an internette de net bir bilgi bulamadım. Ama öğrenmeye devam ediyorum! 🔍`;
