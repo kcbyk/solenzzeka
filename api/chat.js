@@ -24,19 +24,26 @@ module.exports = async (req, res) => {
       const brain = require('../lib/autonomous-brain');
       const github = require('../lib/github-saver');
 
-      const researchResult = await research.performResearch(message.trim());
-      if (researchResult.success) {
-        result = engine.findAnswer(message.trim());
-        autoLearned = true;
-        
-        // Eğitim setine ekle ve GitHub'a gönder
-        brain.addToTrainingSet(message.trim(), result.answer);
-        github.autoSave(); 
+      console.log(`🔎 "${message.trim()}" için araştırma başlatılıyor...`);
+      
+      try {
+        const researchResult = await research.performResearch(message.trim());
+        if (researchResult.success) {
+          // Yeni bilgilerle tekrar ara
+          result = engine.findAnswer(message.trim());
+          autoLearned = true;
+          
+          // Eğitim setine ekle ve GitHub'a gönder
+          brain.addToTrainingSet(message.trim(), result.answer);
+          github.autoSave(); 
+        } else {
+          // Araştırma başarısızsa bile en azından "bilmiyorum ama öğrenebilirim" mesajı ver
+          result.answer = `Üzgünüm, "${message.trim()}" hakkında şu an internette de net bir bilgi bulamadım. Ama öğrenmeye devam ediyorum! 🔍`;
+          result.noData = false; // Hata mesajını ezmek için
+        }
+      } catch (err) {
+        console.error('Araştırma sırasında hata:', err);
       }
-    } else {
-      // Normal cevapları da bazen eğitim setine ekle (kalite için)
-      const brain = require('../lib/autonomous-brain');
-      brain.addToTrainingSet(message.trim(), result.answer);
     }
 
     const stats = engine.getStats();
